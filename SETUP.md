@@ -147,3 +147,10 @@ First of all: Many thanks to Pete Gallagher for his helpful [talk](https://www.y
    ```
    Hello World! ;-)
    ```
+   On errors like  
+   `A fatal error occurred. The required library libhostfxr.so could not be found.`  
+   you have to set the .NET root variable again with  
+   `export DOTNET_ROOT=/opt/dotnet`
+4. Want it faster? First build and then run the compiled DLL using  
+   `dotnet build`  
+   `dotnet bin/Debug/net5.0/console-app.dll`
