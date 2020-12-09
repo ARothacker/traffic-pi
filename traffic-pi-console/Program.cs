@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace ARWebApps.Learning.TrafficPi.Console
+namespace ARWebApps.Learning.TrafficPi.ConsoleApp
 {
     class Program
     {

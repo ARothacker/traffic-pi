@@ -3,7 +3,7 @@
   <PropertyGroup>
     <OutputType>Exe</OutputType>
     <TargetFramework>net5.0</TargetFramework>
-    <RootNamespace>ARWebApps.Learning.TrafficPi.Console</RootNamespace>
+    <RootNamespace>ARWebApps.Learning.TrafficPi.ConsoleApp</RootNamespace>
   </PropertyGroup>
 
 </Project>
