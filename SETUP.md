@@ -135,24 +135,3 @@ First of all: Many thanks to Pete Gallagher for his helpful [talk](https://www.y
    ```
    git version 2.20.1
    ```
-2.
-
-## Clone & Run Your Application
-
-1. Clone the application from your (or my) repository like  
-   `git clone https://github.com/ARothacker/traffic-pi.git`
-2. Switch into the application folder  
-   `cd traffic-pi/console-app`
-3. Run the application  
-   `dotnet run`  
-   which showed something like that at the time of writing this tutorial:
-   ```
-   Hello World! ;-)
-   ```
-   On errors like  
-   `A fatal error occurred. The required library libhostfxr.so could not be found.`  
-   you have to set the .NET root variable again with  
-   `export DOTNET_ROOT=/opt/dotnet`
-4. Want it faster? First build and then run the compiled DLL using  
-   `dotnet build`  
-   `dotnet bin/Debug/net5.0/console-app.dll`
