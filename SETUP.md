@@ -140,7 +140,7 @@ First of all: Many thanks to Pete Gallagher for his helpful [talk](https://www.y
 1. Clone the application from your (or my) repository like  
    `git clone https://github.com/ARothacker/traffic-pi.git`
 2. Switch into the application folder  
-   `cd traffic-pi/console`
+   `cd traffic-pi/console-app`
 3. Run the application  
    `dotnet run`  
    which showed something like that at the time of writing this tutorial:
