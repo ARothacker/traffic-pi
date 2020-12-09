@@ -122,6 +122,8 @@ First of all: Many thanks to Pete Gallagher for his helpful [talk](https://www.y
 10. Clean up (don't forget to adjust your file names if necessary!)  
     `rm dotnet-sdk-5.0.101-linux-arm.tar.gz`  
     `rm aspnetcore-runtime-5.0.1-linux-arm.tar.gz`
+11. Restart your Pi with  
+    `sudo reboot`
 
 ### Install More Tools
 
