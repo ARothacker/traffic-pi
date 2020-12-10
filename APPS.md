@@ -31,7 +31,7 @@ A plain Hello World app to test .NET 5
 
 An app to test the GPIO basics of your Raspberry Pi connected to a simple breadboard setup
 
-1. Set up your breadboard like described [here](#)
+1. Set up your breadboard like you see it [here](simple-led-console-app/breadboard/circuit-1.jpg) and [here](simple-led-console-app/breadboard/circuit-2.jpg)
 2. Switch into the application folder  
    `cd ~/traffic-pi/led-console-app`
 3. Run the application  
