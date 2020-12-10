@@ -33,7 +33,18 @@ An app to test the GPIO basics of your Raspberry Pi connected to a simple breadb
 
 1. Set up your breadboard like you see it [here](simple-led-console-app/breadboard/circuit-1.jpg) and [here](simple-led-console-app/breadboard/circuit-2.jpg)
 2. Switch into the application folder  
-   `cd ~/traffic-pi/led-console-app`
+   `cd ~/traffic-pi/simple-led-console-app`
 3. Run the application  
    `dotnet run`  
    which should make your LED blinking
+
+## Traffic Lights Console App
+
+An app to control traffic from three directions with your Raspberry Pi connected to an according breadboard setup
+
+1. Set up your breadboard like you see it [here](traffic-light-console-app/breadboard/circuit-1.jpg) and [here](traffic-light-console-app/breadboard/circuit-2.jpg)
+2. Switch into the application folder  
+   `cd ~/traffic-pi/traffic-light-console-app`
+3. Run the application  
+   `dotnet run`  
+   which should control your traffic ;-)

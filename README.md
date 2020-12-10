@@ -12,12 +12,12 @@ Learning project for .NET 5 on a Raspberry Pi to control traffic light LEDs
 
 ### Hello World Console App
 
-Current status: Hello World app is running
+Says Hello World
 
 ### Simple LED Console App
 
-Current status: WiP
+Lets your LED blink in an interval
 
 ### Traffic Lights Console App
 
-Current status: to come...
+[WiP]
