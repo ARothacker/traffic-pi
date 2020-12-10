@@ -18,7 +18,8 @@ namespace ARWebApps.Learning.TrafficPi.SimpleLedConsoleApp
       ILedController ledController = new SimpleLedController();
       ledController.Start();
 
-      Console.ReadKey();
+      Console.WriteLine("Press Enter to exit");
+      Console.ReadLine();
       Console.WriteLine("Bye!");
     }
   }
