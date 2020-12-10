@@ -1,11 +1,12 @@
 ﻿using System;
 using System.Runtime.InteropServices;
+using System.Threading.Tasks;
 
 namespace ARWebApps.Learning.TrafficPi.SimpleLedConsoleApp
 {
   class Program
   {
-    static void Main(string[] args)
+    public static void Main(string[] args)
     {
       if (!RuntimeInformation.IsOSPlatform(OSPlatform.Linux))
       {
@@ -16,7 +17,7 @@ namespace ARWebApps.Learning.TrafficPi.SimpleLedConsoleApp
       Console.WriteLine("Hello LED!");
 
       ILedController ledController = new SimpleLedController();
-      ledController.Start();
+      Task.Run(() => ledController.DoLighting());
 
       Console.WriteLine("Press Enter to exit");
       Console.ReadLine();

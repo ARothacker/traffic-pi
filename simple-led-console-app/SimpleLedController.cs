@@ -1,12 +1,13 @@
 using System;
 using System.Device.Gpio;
 using System.Threading;
+using System.Threading.Tasks;
 
 namespace ARWebApps.Learning.TrafficPi.SimpleLedConsoleApp
 {
   public class SimpleLedController : ILedController
   {
-    public void Start()
+    public void DoLighting()
     {
       var gpioController = new GpioController(PinNumberingScheme.Logical);
 
