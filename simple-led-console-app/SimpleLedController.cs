@@ -7,29 +7,29 @@ namespace ARWebApps.Learning.TrafficPi.SimpleLedConsoleApp
 {
   public class SimpleLedController : ILedController
   {
+    private const int PIN = 23; // GPIO 23 = Pin 16
+
     public void DoLighting()
     {
       var gpioController = new GpioController(PinNumberingScheme.Logical);
-
-      var pin = 23; // GPIO 23 = Pin 16
       var intervalInMS = 300;
 
-      gpioController.OpenPin(pin, PinMode.Output);
+      gpioController.OpenPin(PIN, PinMode.Output);
 
       try
       {
         while (true)
         {
-          gpioController.Write(pin, PinValue.High);
+          gpioController.Write(PIN, PinValue.High);
           Thread.Sleep(intervalInMS);
 
-          gpioController.Write(pin, PinValue.Low);
+          gpioController.Write(PIN, PinValue.Low);
           Thread.Sleep(intervalInMS);
         }
       }
       finally
       {
-        gpioController.ClosePin(pin);
+        gpioController.ClosePin(PIN);
       }
     }
   }
