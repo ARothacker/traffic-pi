@@ -35,5 +35,5 @@ An app to test the GPIO basics of your Raspberry Pi connected to a simple breadb
 2. Switch into the application folder  
    `cd ~/traffic-pi/led-console-app`
 3. Run the application  
-   `dotnet run`
+   `dotnet run`  
    which should make your LED blinking
