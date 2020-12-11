@@ -2,8 +2,11 @@ using System.Threading.Tasks;
 
 namespace ARWebApps.Learning.TrafficPi.TrafficLightsConsoleApp
 {
-  public interface ILedController
+  public enum TrafficLightColor
   {
-    void DoLighting();
+    Red = 0,
+    RedYellow = 1,
+    Yellow = 2,
+    Green = 3
   }
 }

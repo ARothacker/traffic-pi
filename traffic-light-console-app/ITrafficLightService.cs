@@ -2,8 +2,8 @@ using System.Threading.Tasks;
 
 namespace ARWebApps.Learning.TrafficPi.TrafficLightsConsoleApp
 {
-  public interface ILedController
+  public interface ITrafficLightService
   {
-    void DoLighting();
+    void SwitchToGreen(TrafficLightIdentifier identifier);
   }
 }
