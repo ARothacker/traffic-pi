@@ -4,6 +4,6 @@ namespace ARWebApps.Learning.TrafficPi.TrafficLightsConsoleApp
 {
   public interface ITrafficLightService
   {
-    void SwitchToGreen(TrafficLightIdentifier identifier);
+    Task SwitchToGreenAsync(TrafficLightIdentifier identifier);
   }
 }

@@ -1,14 +1,13 @@
+using System;
 using System.Collections.Generic;
 using System.Threading;
+using System.Threading.Tasks;
 
 namespace ARWebApps.Learning.TrafficPi.TrafficLightsConsoleApp
 {
   public class TrafficLightController : ILedController
   {
-    private const int CROSSROADS_CLOSURE_IN_MS = 500;
-    private const int LIGHT_SWITCH_INTERVAL_IN_MS = 500;
-
-    public void DoLighting()
+    public async Task DoLightingAsync(CancellationToken token)
     {
       var trafficLights = new TrafficLightList
       {
@@ -32,20 +31,22 @@ namespace ARWebApps.Learning.TrafficPi.TrafficLightsConsoleApp
         )
       };
 
-      using (var trafficLightService = new TrafficLightService(CROSSROADS_CLOSURE_IN_MS, LIGHT_SWITCH_INTERVAL_IN_MS, trafficLights))
+      using (var trafficLightService = new TrafficLightService(trafficLights))
       {
         while (true)
         {
-          trafficLightService.PerformLedCheck();
+          await trafficLightService.PerformLedCheckAsync();
 
-          trafficLightService.SwitchToGreen(TrafficLightIdentifier.Top);
-          Thread.Sleep(CROSSROADS_CLOSURE_IN_MS);
+          foreach (var trafficLightIdentifier in (TrafficLightIdentifier[])Enum.GetValues(typeof(TrafficLightIdentifier)))
+          {
+            await trafficLightService.SwitchToGreenAsync(trafficLightIdentifier);
 
-          trafficLightService.SwitchToGreen(TrafficLightIdentifier.Middle);
-          Thread.Sleep(CROSSROADS_CLOSURE_IN_MS);
-
-          trafficLightService.SwitchToGreen(TrafficLightIdentifier.Bottom);
-          Thread.Sleep(CROSSROADS_CLOSURE_IN_MS);
+            if (token.IsCancellationRequested)
+            {
+              await trafficLightService.SwitchOff();
+              throw new TaskCanceledException("Lighting was cancelled");
+            }
+          }
         }
       }
     }

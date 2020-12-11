@@ -2,6 +2,7 @@ using System;
 using System.Linq;
 using System.Runtime.InteropServices;
 using System.Threading;
+using System.Threading.Tasks;
 
 namespace ARWebApps.Learning.TrafficPi.TrafficLightsConsoleApp
 {
@@ -9,21 +10,19 @@ namespace ARWebApps.Learning.TrafficPi.TrafficLightsConsoleApp
   {
     #region Private Fields
 
-    private ITrafficLightExecutor executor;
     private TrafficLightList trafficLights;
-    private int crossroadsClosureInMs;
-    private int lightSwitchIntervalInMs;
+    private TrafficLightColorList colors;
+    private ITrafficLightExecutor executor;
 
     #endregion
 
     #region Constructors
 
-    public TrafficLightService(int crossroadsClosureInMs, int lightSwitchIntervalInMs, TrafficLightList trafficLights)
+    public TrafficLightService(TrafficLightList trafficLights)
     {
-      this.crossroadsClosureInMs = crossroadsClosureInMs;
-      this.lightSwitchIntervalInMs = lightSwitchIntervalInMs;
       this.trafficLights = trafficLights;
 
+      this.colors = new TrafficLightColorList();
       InitializeExecutor();
     }
 
@@ -31,35 +30,43 @@ namespace ARWebApps.Learning.TrafficPi.TrafficLightsConsoleApp
 
     #region Public Methods
 
-    public void SwitchToGreen(TrafficLightIdentifier identifier)
+    public async Task SwitchToGreenAsync(TrafficLightIdentifier identifier)
     {
-      foreach (var otherTrafficLight in this.trafficLights.Where(tl => tl.Identifier != identifier))
+      foreach (var trafficLight in this.trafficLights.GetCounterTrafficLights(identifier))
       {
-        InternalSwitchToRed(otherTrafficLight);
+        await InternalSwitchToRedAsync(trafficLight);
       }
 
-      var trafficLight = trafficLights.SingleOrDefault(tl => tl.Identifier == identifier);
-      if (trafficLight != null)
-      {
-        InternalSwitchToGreen(trafficLight);
-      }
+      await InternalSwitchToGreenAsync(trafficLights[identifier]);
     }
 
-    public void SwitchToRed()
+    public async Task SwitchToRedAsync()
     {
       foreach (var trafficLight in this.trafficLights)
       {
-        InternalSwitchToRed(trafficLight);
+        await InternalSwitchToRedAsync(trafficLight);
       }
     }
 
-    public void PerformLedCheck()
+    public async Task PerformLedCheckAsync()
     {
       InternalAllOn();
-      Thread.Sleep(2000);
+      await Task.Delay(2000);
 
       InternalAllOff();
-      Thread.Sleep(2000);
+      await Task.Delay(2000);
+    }
+
+    public async Task SwitchOff()
+    {
+      await SwitchToRedAsync();
+
+      await InternalAllYellow();
+
+      InternalAllOff();
+      await Task.Delay(1000);
+      await InternalAllYellow();
+      InternalAllOff();
     }
 
     public void Dispose()
@@ -90,6 +97,15 @@ namespace ARWebApps.Learning.TrafficPi.TrafficLightsConsoleApp
         InternalAllOn(trafficLight);
       }
     }
+    private async Task InternalAllYellow()
+    {
+      foreach (var trafficLight in this.trafficLights)
+      {
+        await InternalSwitchToColorAsync(trafficLight, TrafficLightColorIdentifier.Yellow);
+      }
+
+      await Task.Delay(1000);
+    }
     private void InternalAllOff()
     {
       foreach (var trafficLight in this.trafficLights)
@@ -100,25 +116,54 @@ namespace ARWebApps.Learning.TrafficPi.TrafficLightsConsoleApp
 
     private void InternalAllOn(TrafficLight trafficLight)
     {
-      this.executor.On(trafficLight, TrafficLightColor.RedYellow);
-      this.executor.On(trafficLight, TrafficLightColor.Green);
+      foreach (var color in this.colors.GetSingleLightColors())
+      {
+        this.executor.On(trafficLight, color.Identifier);
+      }
     }
     private void InternalAllOff(TrafficLight trafficLight)
     {
-      this.executor.Off(trafficLight, TrafficLightColor.RedYellow);
-      this.executor.Off(trafficLight, TrafficLightColor.Green);
+      foreach (var color in this.colors.GetSingleLightColors())
+      {
+        this.executor.Off(trafficLight, color.Identifier);
+      }
     }
 
-    private void InternalSwitchToGreen(TrafficLight trafficLight)
+    private async Task InternalSwitchToGreenAsync(TrafficLight trafficLight)
     {
-      this.executor.Off(trafficLight, TrafficLightColor.RedYellow);
-      this.executor.On(trafficLight, TrafficLightColor.Green);
+      if (trafficLight.CurrentColor != TrafficLightColorIdentifier.Green)
+      {
+        if (trafficLight.CurrentColor != TrafficLightColorIdentifier.RedYellow)
+        {
+          await InternalSwitchToColorAsync(trafficLight, TrafficLightColorIdentifier.RedYellow);
+        }
+
+        await InternalSwitchToColorAsync(trafficLight, TrafficLightColorIdentifier.Green);
+      }
     }
-    private void InternalSwitchToRed(TrafficLight trafficLight)
+    private async Task InternalSwitchToRedAsync(TrafficLight trafficLight)
     {
-      this.executor.On(trafficLight, TrafficLightColor.Red);
-      this.executor.Off(trafficLight, TrafficLightColor.Yellow);
-      this.executor.Off(trafficLight, TrafficLightColor.Green);
+      if (trafficLight.CurrentColor != TrafficLightColorIdentifier.Red)
+      {
+        if (trafficLight.CurrentColor != TrafficLightColorIdentifier.Yellow)
+        {
+          await InternalSwitchToColorAsync(trafficLight, TrafficLightColorIdentifier.Yellow);
+        }
+
+        await InternalSwitchToColorAsync(trafficLight, TrafficLightColorIdentifier.Red);
+      }
+    }
+
+    private async Task InternalSwitchToColorAsync(TrafficLight trafficLight, TrafficLightColorIdentifier identifier)
+    {
+      foreach (var counterColor in this.colors.GetCounterColors(identifier))
+      {
+        this.executor.Off(trafficLight, counterColor.Identifier);
+      }
+      this.executor.On(trafficLight, identifier);
+
+      trafficLight.CurrentColor = identifier;
+      await Task.Delay(this.colors[identifier].DwellTimeInMs);
     }
 
     #endregion

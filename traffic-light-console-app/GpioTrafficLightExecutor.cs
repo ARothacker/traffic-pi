@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Device.Gpio;
 using System.Runtime.InteropServices;
+using System.Threading.Tasks;
 
 namespace ARWebApps.Learning.TrafficPi.TrafficLightsConsoleApp
 {
@@ -36,20 +37,20 @@ namespace ARWebApps.Learning.TrafficPi.TrafficLightsConsoleApp
 
     #region Public Methods
 
-    public void On(TrafficLight trafficLight, TrafficLightColor color)
+    public void On(TrafficLight trafficLight, TrafficLightColorIdentifier identifier)
     {
-      List<int> pins = GetPins(trafficLight, color);
+      List<int> pins = GetPins(trafficLight, identifier);
       pins.ForEach(pin => this.gpioController.Write(pin, PinValue.High));
 
-      this.additionalExecutor?.On(trafficLight, color);
+      this.additionalExecutor?.On(trafficLight, identifier);
     }
 
-    public void Off(TrafficLight trafficLight, TrafficLightColor color)
+    public void Off(TrafficLight trafficLight, TrafficLightColorIdentifier identifier)
     {
-      List<int> pins = GetPins(trafficLight, color);
+      List<int> pins = GetPins(trafficLight, identifier);
       pins.ForEach(pin => this.gpioController.Write(pin, PinValue.Low));
 
-      this.additionalExecutor?.Off(trafficLight, color);
+      this.additionalExecutor?.Off(trafficLight, identifier);
     }
 
     public void Dispose()
@@ -62,15 +63,15 @@ namespace ARWebApps.Learning.TrafficPi.TrafficLightsConsoleApp
 
     #region Private Methods
 
-    private List<int> GetPins(TrafficLight trafficLight, TrafficLightColor color)
+    private List<int> GetPins(TrafficLight trafficLight, TrafficLightColorIdentifier identifier)
     {
-      return color switch
+      return identifier switch
       {
-        TrafficLightColor.Red => new List<int>() { trafficLight.Red },
-        TrafficLightColor.RedYellow => new List<int>() { trafficLight.Red, trafficLight.Yellow },
-        TrafficLightColor.Yellow => new List<int>() { trafficLight.Yellow },
-        TrafficLightColor.Green => new List<int>() { trafficLight.Green },
-        _ => throw new Exception($"Unknown TrafficLightColor {color}")
+        TrafficLightColorIdentifier.Red => new List<int>() { trafficLight.Red },
+        TrafficLightColorIdentifier.RedYellow => new List<int>() { trafficLight.Red, trafficLight.Yellow },
+        TrafficLightColorIdentifier.Yellow => new List<int>() { trafficLight.Yellow },
+        TrafficLightColorIdentifier.Green => new List<int>() { trafficLight.Green },
+        _ => throw new Exception($"Unknown TrafficLightColorIdentifier {identifier}")
       };
     }
 

@@ -1,9 +1,10 @@
+using System.Threading;
 using System.Threading.Tasks;
 
 namespace ARWebApps.Learning.TrafficPi.TrafficLightsConsoleApp
 {
   public interface ILedController
   {
-    void DoLighting();
+    Task DoLightingAsync(CancellationToken token);
   }
 }

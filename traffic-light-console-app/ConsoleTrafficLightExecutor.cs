@@ -6,28 +6,28 @@ namespace ARWebApps.Learning.TrafficPi.TrafficLightsConsoleApp
   {
     public ConsoleTrafficLightExecutor()
     {
-      Console.WriteLine($"--- {this.GetType()} initialized ---");
+      Console.WriteLine($"--- {this.GetType().Name} initialized ---");
     }
 
-    public void On(TrafficLight trafficLight, TrafficLightColor color)
+    public void On(TrafficLight trafficLight, TrafficLightColorIdentifier identifier)
     {
-      Console.WriteLine(GetFormattedString(trafficLight.Identifier.ToString(), color, "ON"));
+      Console.WriteLine(GetFormattedString(trafficLight.Identifier.ToString(), identifier, "ON"));
     }
 
-    public void Off(TrafficLight trafficLight, TrafficLightColor color)
+    public void Off(TrafficLight trafficLight, TrafficLightColorIdentifier identifier)
     {
-      Console.WriteLine(GetFormattedString(trafficLight.Identifier.ToString(), color, "OFF"));
+      Console.WriteLine(GetFormattedString(trafficLight.Identifier.ToString(), identifier, "OFF"));
     }
 
     public void Dispose()
     {
-      Console.WriteLine($"--- {this.GetType()} disposed ---");
+      Console.WriteLine($"--- {this.GetType().Name} disposed ---");
     }
 
-    private string GetFormattedString(string identifier, TrafficLightColor color, string action)
+    private string GetFormattedString(string trafficLightIdentifier, TrafficLightColorIdentifier colorIdentifier, string action)
     {
-      var formattedIdentifier = identifier.PadRight(8);
-      var formattedColor = color.ToString().PadRight(11);
+      var formattedIdentifier = trafficLightIdentifier.PadRight(8);
+      var formattedColor = colorIdentifier.ToString().PadRight(11);
       return $"{formattedIdentifier}{formattedColor}» {action}";
     }
   }

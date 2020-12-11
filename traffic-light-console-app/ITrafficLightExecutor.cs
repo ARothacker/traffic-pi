@@ -4,7 +4,7 @@ namespace ARWebApps.Learning.TrafficPi.TrafficLightsConsoleApp
 {
   public interface ITrafficLightExecutor : IDisposable
   {
-    void On(TrafficLight trafficLight, TrafficLightColor color);
-    void Off(TrafficLight trafficLight, TrafficLightColor color);
+    void On(TrafficLight trafficLight, TrafficLightColorIdentifier identifier);
+    void Off(TrafficLight trafficLight, TrafficLightColorIdentifier identifier);
   }
 }
