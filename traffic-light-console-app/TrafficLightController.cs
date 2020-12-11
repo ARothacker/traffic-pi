@@ -36,6 +36,8 @@ namespace ARWebApps.Learning.TrafficPi.TrafficLightsConsoleApp
       {
         while (true)
         {
+          trafficLightService.PerformLedCheck();
+
           trafficLightService.SwitchToGreen(TrafficLightIdentifier.Top);
           Thread.Sleep(CROSSROADS_CLOSURE_IN_MS);
 

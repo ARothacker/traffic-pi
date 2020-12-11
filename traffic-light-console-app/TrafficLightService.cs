@@ -1,6 +1,7 @@
 using System;
 using System.Linq;
 using System.Runtime.InteropServices;
+using System.Threading;
 
 namespace ARWebApps.Learning.TrafficPi.TrafficLightsConsoleApp
 {
@@ -52,6 +53,15 @@ namespace ARWebApps.Learning.TrafficPi.TrafficLightsConsoleApp
       }
     }
 
+    public void PerformLedCheck()
+    {
+      InternalAllOn();
+      Thread.Sleep(2000);
+
+      InternalAllOff();
+      Thread.Sleep(2000);
+    }
+
     public void Dispose()
     {
       this.executor.Dispose();
@@ -73,12 +83,37 @@ namespace ARWebApps.Learning.TrafficPi.TrafficLightsConsoleApp
       }
     }
 
+    private void InternalAllOn()
+    {
+      foreach (var trafficLight in this.trafficLights)
+      {
+        InternalAllOn(trafficLight);
+      }
+    }
+    private void InternalAllOff()
+    {
+      foreach (var trafficLight in this.trafficLights)
+      {
+        InternalAllOff(trafficLight);
+      }
+    }
+
+    private void InternalAllOn(TrafficLight trafficLight)
+    {
+      this.executor.On(trafficLight, TrafficLightColor.RedYellow);
+      this.executor.On(trafficLight, TrafficLightColor.Green);
+    }
+    private void InternalAllOff(TrafficLight trafficLight)
+    {
+      this.executor.Off(trafficLight, TrafficLightColor.RedYellow);
+      this.executor.Off(trafficLight, TrafficLightColor.Green);
+    }
+
     private void InternalSwitchToGreen(TrafficLight trafficLight)
     {
       this.executor.Off(trafficLight, TrafficLightColor.RedYellow);
       this.executor.On(trafficLight, TrafficLightColor.Green);
     }
-
     private void InternalSwitchToRed(TrafficLight trafficLight)
     {
       this.executor.On(trafficLight, TrafficLightColor.Red);
